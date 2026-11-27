@@ -24,9 +24,13 @@ Run `npm test`, `npm run typecheck`, `npm run build` and `npm run check:public`.
 
 The user reported successful Chinese↔English captions, microphone input, YouTube audio sharing, phone QR reception, Traditional Chinese display and iPhone Safari portrait/landscape. One full YouTube test completed without RTM errors; other runs reported RTM socket interruptions. These reports are evidence of tested paths, not a network reliability guarantee.
 
+## Production deployment status (2026-11-28)
+
+The user completed deployment at [agora-lingua-live.vercel.app](https://agora-lingua-live.vercel.app/?lang=en). A read-only check confirmed the homepage returned HTTP 200 and `/api/setup` reported `ready: true`, `storage: "redis"`, `local: false`, host creation code enabled, and the expected Production origin. The readiness endpoint confirms required settings are present, not a successful Redis write or an end-to-end audio session. No microphone or Agent was started by that check.
+
 ## Remaining limits
 
-- Live Vercel + Upstash integration has **not** been deployed/verified in this preparation session. Follow both-direction audio, QR and stopping checks in the deployment guide.
+- Production pages and configuration readiness have been checked. Real Redis writes, both-direction audio, QR reception and stopping on the deployed site still require the acceptance checks in the deployment guide.
 - Agent token renewal beyond its 24-hour credential lifetime has not been validated. Browser one-hour renewal logic is tested, but a fresh multi-hour real cloud session has not been completed here.
 - A specific Chrome iOS 18 combination clips in landscape while Safari on the same device is reported normal. No model-specific viewport patch is claimed as a verified fix.
 - Screen/system audio varies by platform. Microphone, browser tab, application window and OBS virtual camera are not interchangeable audio sources.

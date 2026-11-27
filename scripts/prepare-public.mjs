@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 
 const root = process.cwd();
 const output = path.join(root, '.release', 'lingua-live');
-const roots = ['.gitignore','.nvmrc','.env.example','AGENTS.md','LICENSE','README.md','README.en.md','package.json','package-lock.json','tsconfig.json','next.config.ts'];
+const roots = ['.gitignore','.nvmrc','.env.example','AGENTS.md','LICENSE','README.md','README.zh-TW.md','package.json','package-lock.json','tsconfig.json','next.config.ts'];
 const documents = ['architecture.md','deployment.zh-TW.md','deployment.en.md','sources.md','validation.md'];
 const scripts = ['smoke-live.mjs','viewer-gateway.mjs','prepare-public.mjs'];
 async function walk(directory) {

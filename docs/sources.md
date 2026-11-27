@@ -1,6 +1,6 @@
 # Documentation Sources / 文檔來源
 
-Checked / 整理日期：2026-11-27 (Asia/Taipei).
+Checked / 整理日期：2026-11-28 (Asia/Taipei).
 
 Links below identify reference material, not a claim that every vendor capability is enabled in this demo. 下列公開來源用於設計與實作參考，不代表本專案已實作文件中的所有能力。
 
@@ -20,6 +20,7 @@ Links below identify reference material, not a claim that every vendor capabilit
 | [Vercel Function limits](https://vercel.com/docs/functions/limitations) | Function execution model; no persistent media relay |
 | [Vercel Hobby plan](https://vercel.com/docs/plans/hobby) / [Fair Use](https://vercel.com/docs/limits/fair-use-guidelines) | Review current plan eligibility and quotas before customer use |
 | [Upstash Redis](https://upstash.com/docs/redis/overall/getstarted) | Redis REST setup and serverless state |
+| [Upstash billing](https://upstash.com/docs/redis/overall/billing) / [Vercel integration](https://upstash.com/docs/redis/howto/vercelintegration) | Free Tier, credit-card requirements, and Personal vs Vercel-managed setup |
 | [GitHub local-code import](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github) | Initial repository/push workflow |
 | [MDN getDisplayMedia](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) | User-gesture capture permissions and browser-specific audio support |
 | [MDN MediaStreamTrack ended](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/ended_event) | Detect stopped browser sharing |

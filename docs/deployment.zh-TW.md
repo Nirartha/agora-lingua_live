@@ -1,6 +1,6 @@
 # GitHub → Vercel 部署指南
 
-[English](deployment.en.md) · [README](../README.md)
+[English](deployment.en.md) · [README](../README.zh-TW.md)
 
 ## 1. 先準備要公開的副本
 
@@ -48,7 +48,7 @@ npm run prepare:public
 cd .release/lingua-live
 
 git init -b main
-git add .gitignore .nvmrc .env.example AGENTS.md LICENSE README.md README.en.md package.json package-lock.json tsconfig.json next.config.ts src tests scripts docs
+git add .gitignore .nvmrc .env.example AGENTS.md LICENSE README.md README.zh-TW.md package.json package-lock.json tsconfig.json next.config.ts src tests scripts docs
 git diff --cached --name-only
 ```
 
@@ -66,12 +66,13 @@ git push -u origin main
 
 ## 3. 建立 Upstash Redis
 
-1. 到 [Upstash Console](https://console.upstash.com/) 建立 Redis database；或在 Vercel 的 **Storage／Marketplace** 尋找 Upstash Redis。
-2. 名稱可用 `lingua-live-production`。區域盡量接近 Vercel Function 與使用者。
-3. 從該 database 取得 **REST URL** 與 **REST Token**，不要用一般 TCP Redis URL 代替。
-4. 保留在自己的平台設定頁，稍後填入 Vercel，不貼到 GitHub、README 或對話。
+1. 如需先用免費方案，在 [Upstash Console](https://console.upstash.com/) 的 **Personal** 帳號直接建立 Redis，明確選擇 **Free Tier**；目前不要求信用卡，但有指令、容量與流量額度，依 [官方計費說明](https://upstash.com/docs/redis/overall/billing) 為準。
+2. 名稱可用 `lingua-live-production`，區域盡量接近 Vercel Function 與使用者。
+3. 在 Details 的 REST API 區塊取得 **HTTPS REST URL** 與一般 **可讀寫 REST Token**，不要填 TCP Endpoint／port 6379，也不要用 Readonly Token。
+4. 直接將這兩個值手動填入 Vercel；不必完成 Marketplace 的 Add／Connect。若付費整合視窗只有 Pay as You Go，可關閉視窗；關閉 Auto Upgrade 不代表該付費方案變為免費。
+5. 登入一直導到 `/vercel/...` 是 Vercel 管理模式。可用無痕或另一個瀏覽器，登入自行註冊的 Personal 帳號；不需要刪除帳號、重建網站或反覆 Connect。
 
-Redis 只存活動控制狀態；字幕 TXT 仍在主持人瀏覽器。免費額度、區域與使用限制以平台當時顯示為準。Preview 測試若共用 Redis，使用不同 `REDIS_KEY_PREFIX`，避免和 Production 活動混用。
+Redis 用來讓不同 Vercel 請求共用活動狀態，不是為了讓網站不被關閉或消除冷啟動；完整字幕仍在主持人瀏覽器。Preview 測試若共用 Redis，使用不同 `REDIS_KEY_PREFIX`，避免和 Production 活動混用。憑證不貼到 GitHub、README 或對話。
 
 ## 4. 匯入 Vercel
 
@@ -97,9 +98,9 @@ Vercel 方案應依目前官方計畫條款與額度選擇。個人作品測試�
 | `TOKEN_BUILDER_URL` | 自己 Worker 的 HTTPS 根網址，無 query／憑證 | 必填 |
 | `UPSTASH_REDIS_REST_URL` | Redis REST URL | 必填 |
 | `UPSTASH_REDIS_REST_TOKEN` | Redis REST Token | 必填 |
-| `DEMO_ACCESS_CODE` | 自己產生、供主持人建立活動的控制碼 | 必填 |
-| `CLEANUP_SECRET` | 與控制碼不同的隨機 Secret | 必填 |
-| `SITE_URL` | 最終穩定 Production HTTPS origin | 部署後補上再 Redeploy |
+| `DEMO_ACCESS_CODE` | 部署者設定、主持人在網頁輸入以建立活動；觀眾不需要 | 必填 |
+| `CLEANUP_SECRET` | 維護端呼叫 POST 清理 API 的隨機 Secret；不同於控制碼，無網頁輸入欄位、不會自動建立排程 | 必填 |
+| `SITE_URL` | 最終穩定 Production HTTPS origin，不含路徑或 query | 執行時必填；首次部署後補上再 Redeploy |
 | `REDIS_KEY_PREFIX` | 例如 `lingua-live-production`；Preview 使用別的名稱 | 建議 |
 | `AGORA_API_BASE_URL` | 預設 `https://api.agora.io`，需符合 Project 區域 | 選填 |
 | `AGORA_V2V_PRESET` | 預設 `v2vt_base`，依服務開通契約 | 選填 |
@@ -112,7 +113,7 @@ App Certificate 留在你自己的 Token Builder；這個網站不需要它。�
 1. 可先不填 `SITE_URL`，按 **Deploy** 取得 Vercel 分配的 Production 網址。此時介面可載入，但會顯示設定未完成並禁止開始。
 2. 複製穩定網址，例如 `https://lingua-live-example.vercel.app`。不要用某一次 build 的臨時 URL，也不要放活動路徑。
 3. 在 Production Environment Variables 加入 `SITE_URL`。
-4. 選 **Redeploy**。環境變數修改不會自動更新既有部署。
+4. 到 **Deployments → 最新部署 → ⋯ → Redeploy**。Settings 本身沒有 Deploy 按鈕；環境變數修改不會自動更新既有部署。
 5. 開啟 `/api/setup`，確認 `ready: true`、`storage: "redis"`、`local: false`、`shareBaseUrl` 是正式網址；不應顯示任何 Secret 值。
 6. 若掃碼者被要求登入 Vercel，檢查 Production 的 Deployment Protection。觀眾網址必須可讓預定的外部觀眾存取；Preview 可繼續保護。
 

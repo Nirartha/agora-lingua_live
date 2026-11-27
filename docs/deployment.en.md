@@ -1,6 +1,6 @@
 # GitHub → Vercel Deployment
 
-[繁體中文](deployment.zh-TW.md) · [README](../README.en.md)
+[繁體中文](deployment.zh-TW.md) · [README](../README.md)
 
 ## 1. Prepare the public copy
 
@@ -42,7 +42,7 @@ Create an empty private `lingua-live` repository on GitHub without generated fil
 ```bash
 cd .release/lingua-live
 git init -b main
-git add .gitignore .nvmrc .env.example AGENTS.md LICENSE README.md README.en.md package.json package-lock.json tsconfig.json next.config.ts src tests scripts docs
+git add .gitignore .nvmrc .env.example AGENTS.md LICENSE README.md README.zh-TW.md package.json package-lock.json tsconfig.json next.config.ts src tests scripts docs
 git diff --cached --name-only
 # Inspect the staged paths before continuing.
 git commit -m "Initial public-ready release"
@@ -54,9 +54,11 @@ Replace `YOUR_ACCOUNT`. Use secure GitHub authentication; do not embed tokens in
 
 ## 3. Provision Redis
 
-Create an Upstash Redis database in the [Upstash Console](https://console.upstash.com/) or through Vercel Storage/Marketplace. Obtain the **REST URL** and **REST Token**, not a TCP Redis connection URL. Keep them out of the repository. Choose a region near your Functions. Review current vendor quotas rather than assuming free hosting at every usage level.
+For a free test deployment, create Redis directly in a Personal account at the [Upstash Console](https://console.upstash.com/) and explicitly select **Free Tier**. Obtain its HTTPS **REST URL** and **read/write REST Token**, not a TCP endpoint or Readonly Token. Enter these two values manually in Vercel; a Marketplace integration or Connect flow is optional.
 
-Use a dedicated database or distinct `REDIS_KEY_PREFIX` values for Production and Preview. Redis stores event/control state, not full transcripts.
+The current free plan does not require a credit card and has command, storage and bandwidth quotas. Check [official billing](https://upstash.com/docs/redis/overall/billing). Pay as You Go is a paid plan; disabling Auto Upgrade does not change it into Free Tier. A redirect to `/vercel/...` indicates the Vercel-managed console; an incognito window or another browser lets you sign into your separately registered Personal account without the existing session. There is no need to delete either account or repeatedly reconnect the integration.
+
+Keep credentials out of Git. Choose a region near your Functions. Use a dedicated database or distinct `REDIS_KEY_PREFIX` values for Production and Preview. Redis stores shared event/control state, not full transcripts; it does not keep a serverless Function awake or remove cold starts. The host browser retains the transcript.
 
 ## 4. Import into Vercel
 
@@ -78,9 +80,9 @@ Set these in **Settings → Environment Variables**, primarily for Production. N
 | `TOKEN_BUILDER_URL` | Your HTTPS builder root URL, without query/auth | Required |
 | `UPSTASH_REDIS_REST_URL` | Redis REST URL | Required |
 | `UPSTASH_REDIS_REST_TOKEN` | Redis REST Token | Required |
-| `DEMO_ACCESS_CODE` | Your host creation access code | Required |
-| `CLEANUP_SECRET` | Separate random cleanup secret | Required |
-| `SITE_URL` | Stable Production HTTPS origin | Add after first deploy |
+| `DEMO_ACCESS_CODE` | Set by the deployer; hosts enter it when creating events, attendees do not | Required |
+| `CLEANUP_SECRET` | Separate maintenance caller secret for the POST cleanup API; no UI field or automatic schedule | Required |
+| `SITE_URL` | Stable Production HTTPS origin, without path/query | Required at runtime; add after first deploy |
 | `REDIS_KEY_PREFIX` | e.g. `lingua-live-production`; distinct for Preview | Recommended |
 | `AGORA_API_BASE_URL` | Default `https://api.agora.io`; match project region | Optional |
 | `AGORA_V2V_PRESET` | Default `v2vt_base`; match enabled service | Optional |
@@ -92,7 +94,7 @@ The App Certificate belongs in your Token Builder, not this website. Use your ow
 
 1. Deploy initially without `SITE_URL` to obtain your stable Production domain. The page can load, but starting remains disabled while setup is incomplete.
 2. Add `SITE_URL=https://your-stable-project.vercel.app` to Production variables, without an event path or build-specific URL.
-3. **Redeploy**: variable changes do not update existing deployments automatically.
+3. **Redeploy**: variable changes do not update existing deployments automatically. In an existing project use **Deployments → latest deployment → ⋯ → Redeploy**. Project Settings itself has no Deploy button.
 4. Check `/api/setup`: `ready: true`, `storage: "redis"`, `local: false`, and the expected `shareBaseUrl`. No credentials should be returned.
 5. If audience devices are asked to log into Vercel, review Production Deployment Protection for the intended audience. Preview can remain protected.
 
