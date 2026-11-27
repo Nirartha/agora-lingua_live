@@ -1,6 +1,15 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { captionHint, localizedEventTitle, localizedUrl, translate } from "../src/lib/i18n";
+import { captionHint, localizedEventTitle, localizedUrl, resolveLocale, translate } from "../src/lib/i18n";
+
+test("first visitors use English while URL and saved language choices keep precedence", () => {
+  assert.equal(resolveLocale(null, null), "en");
+  assert.equal(resolveLocale("unsupported", "invalid"), "en");
+  assert.equal(resolveLocale(null, "zh-TW"), "zh-TW");
+  assert.equal(resolveLocale("unsupported", "zh-TW"), "zh-TW");
+  assert.equal(resolveLocale("en", "zh-TW"), "en");
+  assert.equal(resolveLocale("zh-TW", "en"), "zh-TW");
+});
 
 test("saved built-in event titles follow UI language in both directions without rewriting custom names", () => {
   const saved = {title: "一場跨越語言的對話"};

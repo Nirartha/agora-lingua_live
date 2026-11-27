@@ -14,7 +14,7 @@ This release distinguishes code checks from live-service results. 本文件區�
 - UI translations, caption-language placeholders, default/custom event titles, mobile window selection and viewport fallback calculations.
 - Audience-only tunnel route boundaries, denied host controls and same-origin request checks.
 
-Release preparation results: **58 automated tests passed**, TypeScript checks passed, and the production build completed. The generated source package contains no real service credentials or local runtime state. The public copy also passed a clean npm install (npm audit: zero reported vulnerabilities), all 58 tests, type checking and `VERCEL=1 npm run build` without `.env.local`. This validates packaging/build boundaries, not live cloud credentials or Upstash connectivity.
+Release preparation results: **59 automated tests passed**, TypeScript checks passed, and the production build completed. The generated source package contains no real service credentials or local runtime state. The public copy also passed a clean npm install (npm audit: zero reported vulnerabilities), all 59 tests, type checking and `VERCEL=1 npm run build` without `.env.local`. This validates packaging/build boundaries, not live cloud credentials or Upstash connectivity.
 
 手機合成資料驗證：上滑後保留第 3–7 組；收到第 8 組時仍維持原閱讀內容與 scrollTop=0。按 Back to latest 才切至第 4–8 組並恢復跟隨。此驗證沒有連線 Agora 或擷取音訊。
 
@@ -23,6 +23,10 @@ Run `npm test`, `npm run typecheck`, `npm run build` and `npm run check:public`.
 ## User-confirmed behavior before release preparation
 
 The user reported successful Chinese↔English captions, microphone input, YouTube audio sharing, phone QR reception, Traditional Chinese display and iPhone Safari portrait/landscape. One full YouTube test completed without RTM errors; other runs reported RTM socket interruptions. These reports are evidence of tested paths, not a network reliability guarantee.
+
+## English default verification (2026-11-28)
+
+A fresh local browser origin with no language preference opened in English. Switching to Traditional Chinese and revisiting the root URL retained Chinese; opening `?lang=en` overrode that saved preference. Page title, HTML language and the built-in event title followed the selected language. Tests/build ran without real credentials, audio capture or Agent creation.
 
 ## Production deployment status (2026-11-28)
 

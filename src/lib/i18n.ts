@@ -1,4 +1,13 @@
 export type Locale = "zh-TW" | "en";
+export const DEFAULT_LOCALE: Locale = "en";
+
+/** An explicit URL wins, then the saved preference, then the first-visit default. */
+export function resolveLocale(query: string | null, saved: string | null): Locale {
+  if (query === "en" || query === "zh-TW") return query;
+  if (saved === "en" || saved === "zh-TW") return saved;
+  return DEFAULT_LOCALE;
+}
+
 export type Params = Record<string, string | number>;
 export const EN: Record<string, string> = {
   "文件": "Document", "水平溢出": "Horizontal overflow", "主區域": "Main (client/scroll)", "字幕區": "Captions (client/scroll)", "安全區內距": "Safe padding",

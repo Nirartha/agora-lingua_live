@@ -15,7 +15,7 @@ The implementation combines Agora RTC audio, RTM caption delivery, a project-ena
 - Microphone input and browser-supported tab/system audio sharing in Chrome/Edge.
 - Host studio, QR audience page, desktop bilingual columns and expandable captions.
 - Mobile sequence: original 1, translation 1, original 2, translation 2. Keeps five recent completed pairs plus the current interim pair; scrolling up pauses following, with a Back to latest button.
-- Traditional Chinese / English UI; caption placeholders follow their pane's language.
+- English by default on first visit, with a Traditional Chinese switch. An explicit `?lang=en` / `?lang=zh-TW` wins over the saved browser preference; returning visitors keep their choice. Caption placeholders follow their pane's language.
 - Host browser transcript storage with Chinese, English or bilingual TXT export, including elapsed time and Taipei timestamps.
 - Browser token renewal, RTM recovery, and audio-source reselection after stopping a share.
 - Local file state or Vercel + Upstash Redis deployment.
