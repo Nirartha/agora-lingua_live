@@ -1,0 +1,19 @@
+node_modules/
+.next*/
+.env*
+!.env.example
+.data/
+.tools/
+*.tsbuildinfo
+test-results/
+.DS_Store
+
+# Generated type bridge / deploy metadata / private project notes
+next-env.d.ts
+.vercel/
+.release/
+docs/local/
+*.log
+coverage/
+*.pem
+*.key
